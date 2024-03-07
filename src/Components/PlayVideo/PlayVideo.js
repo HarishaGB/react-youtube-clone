@@ -21,7 +21,7 @@ const PlayVideo = ({videoId}) =>{
     const fetchVideoData = async () =>{
         //Fetching Videos Data
         const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
-         //`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
+        
         await fetch(videoDetails_url).then(res=>res.json()).then(data => setApiData(data.items[0]));
          console.log(apiData);
     }
@@ -29,10 +29,9 @@ const PlayVideo = ({videoId}) =>{
     const fetchOtherData = async () =>{
         //Fetching Channel Data
         
-    if(apiData){
+    
     const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`
-    }
-                         //`https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelID}&key=${API_KEY}`;
+    
       await fetch(channelData_url).then(res => res.json()).then(data =>setChannelData(data.items[0]));
    }
 
