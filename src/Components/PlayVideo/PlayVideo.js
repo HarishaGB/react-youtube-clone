@@ -10,22 +10,29 @@ import use_profile from '../../Assets/user_profile.jpg';
 import { API_KEY, value_converter } from "../../data";
 import moment from "moment";
 
-console.log("video");
+//console.log(apiData);
+//console.log("video");
 const PlayVideo = ({videoId}) =>{
 
     const [apiData, setApiData] = useState(null);
     const [channelData, setChannelData] = useState(null);
 
+   
     const fetchVideoData = async () =>{
         //Fetching Videos Data
         const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
+         //`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
         await fetch(videoDetails_url).then(res=>res.json()).then(data => setApiData(data.items[0]));
+         console.log(apiData);
     }
 
     const fetchOtherData = async () =>{
         //Fetching Channel Data
-
-    const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelD}&key=${API_KEY}`;
+        
+    if(apiData){
+    const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`
+    }
+                         //`https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelID}&key=${API_KEY}`;
       await fetch(channelData_url).then(res => res.json()).then(data =>setChannelData(data.items[0]));
    }
 
