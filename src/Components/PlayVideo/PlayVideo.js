@@ -9,6 +9,7 @@ import jack from '../../Assets/jack.png';
 import use_profile from '../../Assets/user_profile.jpg';
 import { API_KEY, value_converter } from "../../data";
 import moment from "moment";
+import axios from "axios";
 
 //console.log(apiData);
 //console.log("video");
@@ -37,9 +38,15 @@ const PlayVideo = ({videoId}) =>{
                             
             await fetch(channelData_url).then(res => res.json()).then(data =>setChannelData(data.items[0]));
                
-            const comment_url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&videoId=_${videoId}=${API_KEY}`;
-
+            const comment_url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&maxResults=50&videoId=${videoId}&key=${API_KEY}`
+            
             await fetch(comment_url).then(res => res.json()).then(data=>setCommentData(data.items))
+            // try {
+            //     let response = await axios.get(comment_url)
+            //     console.log(response);
+            // } catch (error) {
+            //     console.log("error",error);
+            // }
 
            }
     
@@ -52,7 +59,7 @@ const PlayVideo = ({videoId}) =>{
     useEffect(()=>{
        fetchOtherData();
     },[apiData])
-
+    // console.log(commentData);
     return(
         <div className="play-video"> 
                {/* <video src={video1} controls autoPlay muted  ></video> */}
@@ -80,22 +87,23 @@ const PlayVideo = ({videoId}) =>{
                     <p>{apiData?apiData.snippet.description.slice(0,250):"Description Here"}</p>
                     <hr/>
                     <h4>{apiData?value_converter(apiData.statistics.commentCount):102} Comments</h4>
-                    {/* {commentData.map((item,index)=>{
-                        return(
-                        )
-                    })} */}
-                            <div className="comment">
-                                <img src={use_profile} alt=""/>
+                    {commentData && commentData.map((item,index)=>{
+                    // console.log(commentData);
+                       return(
+                            <div key={index} className="comment">
+                                <img src={item.snippet.topLevelComment.snippet.authorProfileImageUrl} alt=""/>
                                 <div>
-                                    <h3>Jack Nicholson <span>1 day ago</span></h3>
-                                    <p>Its very good video for students</p>
+                                    <h3>{item.snippet.topLevelComment.snippet.authorDisplayName}<span>1 day ago</span></h3>
+                                    <p>I{item.snippet.topLevelComment.snippet.textDisplay}</p>
                                     <div className="comment-action">
                                         <img src={like} alt="" />
-                                        <span>244</span>
+                                        <span>{value_converter(item.snippet.topLevelComment.snippet.likeCount)}</span>
                                         <img src={dislike} alt=""/>
                                     </div>
                                 </div>
                             </div>
+                       )
+                     })} 
                </div>               
         </div>
     )
