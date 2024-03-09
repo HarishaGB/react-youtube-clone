@@ -9,12 +9,14 @@ import jack from '../../Assets/jack.png';
 import use_profile from '../../Assets/user_profile.jpg';
 import { API_KEY, value_converter } from "../../data";
 import moment from "moment";
-import axios from "axios";
+import { useParams } from "react-router-dom";
 
 //console.log(apiData);
 //console.log("video");
 
-const PlayVideo = ({videoId}) =>{
+const PlayVideo = () =>{ //{videoId}
+
+    const {videoId} = useParams();
 
     const [apiData, setApiData] = useState(null);
     const [channelData, setChannelData] = useState(null);
@@ -88,7 +90,7 @@ const PlayVideo = ({videoId}) =>{
                     <hr/>
                     <h4>{apiData?value_converter(apiData.statistics.commentCount):102} Comments</h4>
                     {commentData && commentData.map((item,index)=>{
-                    // console.log(commentData);
+                    console.log(commentData);
                        return(
                             <div key={index} className="comment">
                                 <img src={item.snippet.topLevelComment.snippet.authorProfileImageUrl} alt=""/>
