@@ -28,7 +28,7 @@ const PlayVideo = () =>{ //{videoId}
             const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`;
                     
             await fetch(videoDetails_url).then(res=>res.json()).then(data => setApiData(data.items[0]));
-                    //console.log(apiData);
+            //console.log(apiData);
                 
         }
 
